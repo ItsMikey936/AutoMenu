@@ -151,7 +151,7 @@ class CompleteMealPlanner:
             
             for meal_type, meal in daily_plan.items():
                 if meal:
-                    print(f"  {meal_type:15} | {meal['name']}")
+                    print(f"  {meal_type:15}:  | {meal['name']} | {meal['description']}")
                 else:
                     print(f"  {meal_type:15} | ❌ No disponible")
     
@@ -177,7 +177,7 @@ class CompleteMealPlanner:
 
                     for meal_type, meal in daily_plan.items():
                         if meal:
-                            f.write(f"  {meal_type:15} | {meal['name']}")
+                            f.write(f"  {meal_type:15}:  | {meal['name']} | {meal['description']}")
                         else:
                             f.write(f"  {meal_type:15} | ❌ No disponible")
                         
