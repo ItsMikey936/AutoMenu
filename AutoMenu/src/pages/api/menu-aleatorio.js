@@ -16,11 +16,9 @@ export async function GET() {
       [tipo.id_Tipos_Comida]
     );
 
-    // Mezcla los platillos y toma tantos como días haya, sin repetir
+    // Mezcla los platillos 
     let platillosShuffle = [...platillos].sort(() => Math.random() - 0.5);
-    // Si hay menos platillos que días, repite aleatoriamente pero sin repetir en la misma semana
     if (platillosShuffle.length < dias.length) {
-      // Si no hay suficientes platillos, rellena con vacíos
       while (platillosShuffle.length < dias.length) {
         platillosShuffle.push({ nombre_Platillo: '' });
       }
