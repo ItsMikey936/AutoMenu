@@ -3,29 +3,16 @@ import Layout from '../layouts/Layout.astro'
 import "../styles/global.css"
 import pool from '../db.js';
 
-// Carga los datos iniciales del menú semanal
-const [dias] = await pool.query('SELECT * FROM dias ORDER BY id_Dia');
-const [tiposComida] = await pool.query('SELECT * FROM tipos_Comida ORDER BY id_Tipos_Comida');
-const [menus] = await pool.query(`
-  SELECT 
-    m.id_Dia, 
-    m.id_Tipos_Comida, 
-    d.dia AS nombre_dia, 
-    t.nombre_Tipo AS nombre_tipo, 
-    p.nombre_Platillo
-  FROM menus m
-  JOIN dias d ON m.id_Dia = d.id_Dia
-  JOIN tipos_Comida t ON m.id_Tipos_Comida = t.id_Tipos_Comida
-  JOIN Platillos p ON m.id_Platillo = p.id_Platillo
-  ORDER BY m.id_Tipos_Comida, m.id_Dia
-`);
+// Constantes para controlar los tipos y días
+const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const tiposAlimento = ['Desayuno', 'Batido', 'Almuerzo', 'Comida', 'Colación', 'Cena'];
 
+// Estructura del menú vacío
 const menuTable = {};
-for (const tipo of tiposComida) {
-  menuTable[tipo.nombre_Tipo] = {};
+for (const tipo of tiposAlimento) {
+  menuTable[tipo] = {};
   for (const dia of dias) {
-    const celda = menus.find(m => m.id_Dia === dia.id_Dia && m.id_Tipos_Comida === tipo.id_Tipos_Comida);
-    menuTable[tipo.nombre_Tipo][dia.dia] = celda ? celda.nombre_Platillo : '';
+    menuTable[tipo][dia] = ''; // Inicializar celda vacía
   }
 }
 ---
@@ -36,9 +23,9 @@ for (const tipo of tiposComida) {
   <div class="flex justify-center mb-6">
     <button 
       id="aleatorio-btn" 
-      class="px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-600 transition duration-300"
+      class="px-6 py-2 bg-gradient-to-r from-green-500 to-lime-500 text-white font-semibold rounded-lg shadow-md hover:from-green-600 hover:to-lime-600 transition duration-300"
     >
-      Generar menú aleatorio
+      Generar desayuno aleatorio
     </button>
   </div>
 
@@ -46,22 +33,78 @@ for (const tipo of tiposComida) {
     <table id="menu-table" class="min-w-full table-auto">
       <thead class="bg-gray-100 text-gray-700 text-sm uppercase tracking-wider">
         <tr>
-          <th class="px-6 py-3 text-left">Tipo de Comida</th>
+          <th class="px-6 py-3 text-left">Tipo de Alimento</th>
           {dias.map(dia => (
-            <th class="px-6 py-3 text-left">{dia.dia}</th>
+            <th class="px-6 py-3 text-left">{dia}</th>
           ))}
+          <th class="px-6 py-3 text-left">Equivalencias</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 bg-white text-gray-800">
-        {tiposComida.map(tipo => (
+        {tiposAlimento.map((tipo, index) => (
           <tr class="hover:bg-gray-50">
-            <td class="px-6 py-4 font-semibold">{tipo.nombre_Tipo}</td>
+            <td class="px-6 py-4 font-semibold">{tipo}</td>
             {dias.map(dia => (
-              <td class="px-6 py-4">{menuTable[tipo.nombre_Tipo][dia.dia]}</td>
+              <td 
+                id={`celda-${tipo}-${dia}`} 
+                class="px-6 py-4"
+              >
+                {menuTable[tipo][dia]}
+              </td>
             ))}
+            <td class="px-6 py-4">
+              {index === 0 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>1 cereal</li>
+                  <li>2 frutas</li>
+                </ul>
+              )}
+              {index === 1 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>2 frutas</li>
+                  <li>1 grasa con proteína</li>
+                  <li>1 cereal</li>
+                  <li>1 lácteo</li>
+                </ul>
+              )}
+              {index === 2 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>2 Origen Animal</li>
+                  <li>1 Vegetales</li>
+                  <li>2 Cereales</li>
+                  <li>1 grasa</li>
+                </ul>
+              )}
+              {index === 3 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>2 frutas</li>
+                  <li>1 grasa con proteína</li>
+                  <li>1 cereal</li>
+                  <li>1 lácteo</li>
+                </ul>
+              )}
+              {index === 4 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>2 frutas</li>
+                  <li>1 grasa con proteína</li>
+                  <li>1 cereal</li>
+                  <li>1 lácteo</li>
+                </ul>
+              )}
+              {index === 5 && (
+                <ul class="list-disc list-inside space-y-1">
+                  <li>2 frutas</li>
+                  <li>1 grasa con proteína</li>
+                  <li>1 cereal</li>
+                  <li>1 lácteo</li>
+                </ul>
+              )}
+            </td>
+
           </tr>
         ))}
       </tbody>
+
     </table>
   </div>
 
@@ -70,23 +113,15 @@ for (const tipo of tiposComida) {
     btn.addEventListener('click', async () => {
       const res = await fetch('/api/menu-aleatorio');
       const data = await res.json();
-      const { menuTable, dias, tiposComida } = data;
-      const tbody = document.querySelector('#menu-table tbody');
-      tbody.innerHTML = '';
-      tiposComida.forEach(tipo => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-50";
-        const tdTipo = document.createElement('td');
-        tdTipo.className = "px-6 py-4 font-semibold";
-        tdTipo.innerHTML = tipo.nombre_Tipo;
-        tr.appendChild(tdTipo);
-        dias.forEach(dia => {
-          const td = document.createElement('td');
-          td.className = "px-6 py-4";
-          td.textContent = menuTable[tipo.nombre_Tipo][dia.dia];
-          tr.appendChild(td);
+      const { menuTable } = data;
+
+      Object.keys(menuTable).forEach(tipo => {
+        Object.keys(menuTable[tipo]).forEach(dia => {
+          const celda = document.getElementById(`celda-${tipo}-${dia}`);
+          if (celda) {
+            celda.textContent = menuTable[tipo][dia];
+          }
         });
-        tbody.appendChild(tr);
       });
     });
   </script>

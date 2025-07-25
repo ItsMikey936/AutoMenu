@@ -49,6 +49,15 @@ cursor = conn.cursor()
 #FOREIGN KEY(id_Tipos_Comida) REFERENCES tipos_Comida(id_Tipos_Comida))"""
 #cursor.execute(menus)
 
+# eh = """CREATE TABLE Ingredientes_Usados (
+#   id_Registro INT AUTO_INCREMENT PRIMARY KEY,
+#   fecha DATE NOT NULL,
+#   momento VARCHAR(50) NOT NULL,
+#   nombre_Ingrediente VARCHAR(255) NOT NULL
+# );
+# """
+# cursor.execute(eh)
+
 #################################################################################################################################################################################
 
 """INSERCIÓN DE TIPO_INGREDIENTES"""
