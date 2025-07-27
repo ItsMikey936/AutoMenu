@@ -1,22 +1,184 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Menú Semanal</title>
+</head>
+<body>
+  <slot />
+</body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .generate-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .generate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .table-container {
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .menu-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .menu-table th {
+            background: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            padding: 15px 10px;
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+
+        .meal-type {
+            font-weight: 600;
+            color: #495057;
+            background: #f8f9fa;
+            text-align: center;
+            width: 120px;
+        }
+
+        .day-cell {
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .equivalencias-cell {
+            min-width: 200px;
+            background: #fafbfc;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            margin: 3px 0;
+            font-size: 0.85rem;
+        }
+
+        .ingredient-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .ingredient-name {
+            font-weight: 500;
+        }
+
+        /* Colores para cada tipo de alimento */
+        .tipo-1 { color: #28a745; } /* Vegetales - Verde */
+        .tipo-2 { color: #dc3545; } /* Origen Animal - Rojo */
+        .tipo-3 { color: #6f42c1; } /* Leguminosas - Púrpura */
+        .tipo-4 { color: #fd7e14; } /* Frutas - Naranja */
+        .tipo-5 { color: #007bff; } /* Cereales - Azul */
+        .tipo-6 { color: #ffc107; } /* Aceites y grasas - Amarillo */
+        .tipo-7 { color: #17a2b8; } /* Lacteos - Cian */
+        .tipo-8 { color: #e83e8c; } /* Grasas con proteina - Rosa */
+        .tipo-9 { color: #6c757d; } /* Azucar - Gris */
+
+        .bullet-1 { background-color: #28a745; }
+        .bullet-2 { background-color: #dc3545; }
+        .bullet-3 { background-color: #6f42c1; }
+        .bullet-4 { background-color: #fd7e14; }
+        .bullet-5 { background-color: #007bff; }
+        .bullet-6 { background-color: #ffc107; }
+        .bullet-7 { background-color: #17a2b8; }
+        .bullet-8 { background-color: #e83e8c; }
+        .bullet-9 { background-color: #6c757d; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .week-counter {
+            background: #e9ecef;
+            padding: 10px 20px;
+            text-align: center;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
