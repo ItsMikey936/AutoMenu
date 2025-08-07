@@ -31,6 +31,8 @@ import "../styles/global.css";
           <th class="px-3 py-4 border-b border-gray-300">MIÉRCOLES</th>
           <th class="px-3 py-4 border-b border-gray-300">JUEVES</th>
           <th class="px-3 py-4 border-b border-gray-300">VIERNES</th>
+          <th class="px-3 py-4 border-b border-gray-300">SABADO</th>
+          <th class="px-3 py-4 border-b border-gray-300">DOMINGO</th>
           <th class="px-3 py-4 border-b border-gray-300">EQUIVALENCIAS</th>
         </tr>
       </thead>
@@ -53,41 +55,41 @@ import "../styles/global.css";
 
     const EQUIVALENCIAS_CONFIG = {
       'Desayuno': [
-        { tipo: 5, cantidad: 1, nombre: 'cereal' },
-        { tipo: 4, cantidad: 2, nombre: 'frutas' }
+        { tipo: 5, cantidad: 1, nombre: 'porcion de cereal' },
+        { tipo: 4, cantidad: 2, nombre: 'porcion de fruta' }
       ],
       'Batido': [
-        { tipo: 4, cantidad: 2, nombre: 'frutas' },
-        { tipo: 8, cantidad: 1, nombre: 'grasa con proteína' },
-        { tipo: 5, cantidad: 1, nombre: 'cereal' },
-        { tipo: 7, cantidad: 1, nombre: 'lácteo' }
+        { tipo: 4, cantidad: 2, nombre: 'porcion de fruta' },
+        { tipo: 8, cantidad: 1, nombre: 'porcion de grasa con proteína' },
+        { tipo: 5, cantidad: 1, nombre: 'porcion de cereal' },
+        { tipo: 7, cantidad: 1, nombre: 'porcion de lácteo' }
       ],
       'Almuerzo': [
-        { tipo: 2, cantidad: 2, nombre: 'origen animal' },
-        { tipo: 1, cantidad: 1, nombre: 'vegetal' },
-        { tipo: 5, cantidad: 2, nombre: 'cereales' },
-        { tipo: 8, cantidad: 1, nombre: 'grasa con proteína' }
+        { tipo: 2, cantidad: 2, nombre: 'porcion de origen animal' },
+        { tipo: 1, cantidad: 1, nombre: 'porcion de vegetal' },
+        { tipo: 5, cantidad: 2, nombre: 'porcion de cereales' },
+        { tipo: 8, cantidad: 1, nombre: 'porcion de grasa con proteína' }
       ],
       'Comida': [
-        { tipo: 2, cantidad: 3, nombre: 'origen animal' },
-        { tipo: 1, cantidad: 2, nombre: 'vegetales' },
-        { tipo: 5, cantidad: 2, nombre: 'cereales' },
-        { tipo: 6, cantidad: 1, nombre: 'grasa y aceite' },
-        { tipo: 4, cantidad: 1, nombre: 'fruta' }
+        { tipo: 2, cantidad: 3, nombre: 'porcion de origen animal' },
+        { tipo: 1, cantidad: 2, nombre: 'porcion de vegetales' },
+        { tipo: 5, cantidad: 2, nombre: 'porcion de cereales' },
+        { tipo: 6, cantidad: 1, nombre: 'porcion de grasa y aceite' },
+        { tipo: 4, cantidad: 1, nombre: 'porcion de fruta' }
       ],
       'Colación': [
-        { tipo: 1, cantidad: 1, nombre: 'vegetal' },
-        { tipo: 8, cantidad: 1, nombre: 'grasa con proteína' },
-        { tipo: 4, cantidad: 1, nombre: 'fruta' }
+        { tipo: 1, cantidad: 1, nombre: 'porcion de vegetal' },
+        { tipo: 8, cantidad: 1, nombre: 'porcion de grasa con proteína' },
+        { tipo: 4, cantidad: 1, nombre: 'porcion de fruta' }
       ],
       'Cena': [
-        { tipo: 4, cantidad: 2, nombre: 'frutas' },
-        { tipo: 2, cantidad: 3, nombre: 'origen animal' },
-        { tipo: 5, cantidad: 1, nombre: 'cereal' }
+        { tipo: 4, cantidad: 2, nombre: 'porcion de frutas' },
+        { tipo: 2, cantidad: 3, nombre: 'porcion de origen animal' },
+        { tipo: 5, cantidad: 1, nombre: 'porcion de cereal' }
       ]
     };
 
-    const DAYS = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES'];
+    const DAYS = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO'];
     let ingredientesPorTipo = {};
     let ingredientesUsados = new Set();
     let semanaActual = 1;
@@ -218,7 +220,7 @@ import "../styles/global.css";
             return `<div class="ingredient-item">
               <div class="ingredient-bullet bullet-${ing.tipoId}" style="background-color: ${colores[ing.tipoId] || '#6b7280'}"></div>
               <span class="ingredient-name tipo-${ing.tipoId}" style="color: ${colores[ing.tipoId] || '#6b7280'}; font-weight: 600;">
-                ${ing.nombre_Ingrediente}
+                ${ing.nombre_Ingrediente} (${ing.unidad_Ingrediente} ${ing.porcion_Ingrediente})
               </span>
             </div>`;
           }).join('');
